@@ -19,8 +19,10 @@ sets the community tone.
   `propagate-web-shared.sh`). Reuses the existing shell: header with support
   pills + visitor-switchable accent swatches, hero, eyebrow/h2 sections, shared
   footer. No new CSS — only `pkg-grid`/`pkg-card`, `note`, and hero classes.
-- Repo features trimmed to keep the surface focused: Issues, Wiki, Projects, and
-  Actions disabled; Discussions kept on.
+- Repo features trimmed to keep the surface focused: Issues, Wiki, and Projects
+  disabled; Discussions kept on. Actions stays enabled — the GitHub Pages
+  `pages-build-deployment` workflow needs it, so it can't be hidden on a repo
+  that serves a Pages site.
 - Branding assets (favicons, logo) copied from the shared set.
 
 ### Files Modified

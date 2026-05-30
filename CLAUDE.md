@@ -13,8 +13,10 @@ user-facing description.
   (`css/style.css`) and the `KIRO:FOOTER` block are **propagated** from
   `Kiro-HQ/web-shared/` via `propagate-web-shared.sh` — do not hand-edit them;
   edit the canonical source and re-propagate.
-- Repo features: Discussions **on**; Issues / Wiki / Projects / Actions **off**
-  to keep the surface focused on discussion + the landing page.
+- Repo features: Discussions **on**; Issues / Wiki / Projects **off** to keep the
+  surface focused. **Actions stays on** — GitHub Pages builds via the
+  `pages-build-deployment` Actions workflow, so disabling Actions breaks the site
+  (the build silently never runs). Can't hide the Actions tab on a Pages repo.
 - Board categories: Ideas, Polls, Show & tell, Q&A (+ Announcements, maintainer
   posts). Category management is web-UI only — GitHub doesn't expose it via API.
 
