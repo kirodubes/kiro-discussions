@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kiro Discussions &mdash; ideas &amp; suggestions for Kiro</title>
+    <meta name="description" content="The community space for Kiro ideas and suggestions. Suggest a feature, upvote the ones you want most, and help decide what gets built next. Powered by GitHub Discussions." />
+    <meta name="theme-color" content="#0f172a" />
+
+    <!-- Favicons (shared Kiro branding) -->
+    <link rel="icon" href="assets/branding/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/branding/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/branding/favicon-192.png" />
+    <link rel="apple-touch-icon" href="assets/branding/apple-touch-icon.png" />
+
+    <!-- Open Graph / Twitter Card -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kirodubes.github.io/kiro-discussions/" />
+    <meta property="og:title" content="Kiro Discussions — ideas & suggestions for Kiro" />
+    <meta property="og:description" content="Suggest a feature, upvote the ones you want, and help decide what gets built next. The community space behind Kiro." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Kiro Discussions — ideas & suggestions for Kiro" />
+    <meta name="twitter:description" content="Help shape Kiro — ideas & suggestions, by the community." />
+
+    <!-- ============================================================
+         Accent palette — visitor-switchable (mirrors kiro-website).
+         Default is DEFAULT_ACCENT below; visitors override it via the
+         swatch row in the header and the choice persists in localStorage.
+         The CSS tokens (--accent-200..500) live in css/style.css.
+         ============================================================ -->
+    <script>
+      const DEFAULT_ACCENT = 'sky';
+
+      // RGB triplets (space-separated) — required by rgb(... / <alpha>) usage.
+      const PALETTES = {
+        sky:     { 200: '186 230 253', 300: '125 211 252', 400: '56 189 248',  500: '14 165 233' },
+        gold:    { 200: '253 230 138', 300: '252 211 77',  400: '251 191 36',  500: '245 158 11' },
+        emerald: { 200: '167 243 208', 300: '110 231 183', 400: '52 211 153',  500: '16 185 129' },
+        violet:  { 200: '221 214 254', 300: '196 181 253', 400: '167 139 250', 500: '139 92 246' },
+        rose:    { 200: '254 205 211', 300: '253 164 175', 400: '251 113 133', 500: '244 63 94'  },
+      };
+
+      function applyAccent(name) {
+        const p = PALETTES[name];
+        if (!p) return;
+        for (const [k, v] of Object.entries(p)) {
+          document.documentElement.style.setProperty(`--accent-${k}`, v);
+        }
+        try { localStorage.setItem('kiro-accent', name); } catch (e) { /* private mode */ }
+        document.querySelectorAll('[data-accent]').forEach(btn => {
+          btn.setAttribute('aria-pressed', btn.dataset.accent === name ? 'true' : 'false');
+        });
+      }
+
+      // Boot before paint so colors don't flash: localStorage > default.
+      const saved = (() => { try { return localStorage.getItem('kiro-accent'); } catch (e) { return null; } })();
+      applyAccent(saved && PALETTES[saved] ? saved : DEFAULT_ACCENT);
+
+      // Click delegation — accent swatches.
+      document.addEventListener('click', e => {
+        const accentBtn = e.target.closest('[data-accent]');
+        if (accentBtn) { applyAccent(accentBtn.dataset.accent); }
+      });
+    </script>
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <!-- ── Header ───────────────────────────────────────────────── -->
+    <header class="site-header">
+      <div class="container header-bar">
+        <a href="/kiro-discussions/" class="brand" aria-label="Kiro Discussions home">
+          <img src="assets/branding/logo.png" alt="" width="28" height="28" />
+          <span>Kiro Discussions</span>
+        </a>
+        <div class="header-right">
+          <nav class="nav" aria-label="Primary">
+            <a href="#how">How it works</a>
+            <a href="#categories">Categories</a>
+            <a href="#guidelines">Guidelines</a>
+            <a href="#reach">Reach us</a>
+          </nav>
+
+          <div class="support" aria-label="Support Erik Dubois">
+            <a href="https://github.com/sponsors/erikdubois" target="_blank" rel="noopener noreferrer"
+               class="pill pill-sponsor" aria-label="Sponsor on GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              <span class="label">Sponsor</span>
+            </a>
+            <a href="https://ko-fi.com/erikdubois" target="_blank" rel="noopener noreferrer"
+               class="pill pill-kofi" aria-label="Support on Ko-fi">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h11v8a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V8z"/><path d="M16 11h2a3 3 0 0 1 0 6h-2"/><path d="M8 4v2"/><path d="M11 3v3"/><path d="M14 4v2"/></svg>
+              <span class="label">Ko-fi</span>
+            </a>
+            <a href="https://www.paypal.me/erikdubois" target="_blank" rel="noopener noreferrer"
+               class="pill pill-paypal" aria-label="Support via PayPal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="13" rx="2"/><path d="M2.5 10h19"/><path d="M6 15h3"/></svg>
+              <span class="label">PayPal</span>
+            </a>
+            <a href="https://www.patreon.com/c/kiroproject" target="_blank" rel="noopener noreferrer"
+               class="pill pill-patreon" aria-label="Support on Patreon">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14.82 2.41c3.96 0 7.18 3.24 7.18 7.21 0 3.96-3.22 7.18-7.18 7.18-3.97 0-7.21-3.22-7.21-7.18 0-3.97 3.24-7.21 7.21-7.21M2 21.6h3.51V2.41H2V21.6"/></svg>
+              <span class="label">Patreon</span>
+            </a>
+          </div>
+
+          <div class="swatches" role="group" aria-label="Accent color">
+            <button type="button" data-accent="sky"     aria-label="Sky accent"     class="swatch" style="background-color:#38bdf8"></button>
+            <button type="button" data-accent="gold"    aria-label="Gold accent"    class="swatch" style="background-color:#fbbf24"></button>
+            <button type="button" data-accent="emerald" aria-label="Emerald accent" class="swatch" style="background-color:#34d399"></button>
+            <button type="button" data-accent="violet"  aria-label="Violet accent"  class="swatch" style="background-color:#a78bfa"></button>
+            <button type="button" data-accent="rose"    aria-label="Rose accent"    class="swatch" style="background-color:#fb7185"></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- ── Hero ───────────────────────────────────────────────── -->
+      <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="container hero-inner">
+          <a href="#how" class="badge">
+            <span class="dot"><span class="ping"></span><span class="core"></span></span>
+            Community &middot; Ideas &amp; suggestions
+          </a>
+          <h1>Help shape <span class="accent">Kiro</span>.</h1>
+          <p class="lead">
+            This is where the Kiro roadmap gets decided. Suggest a feature, upvote the ones you want
+            most, and watch the most-wanted rise to the top. No idea is too small &mdash; a lot of what's
+            in the <strong>Arch Linux Tweak Tool</strong> and the ISO started as someone asking for it.
+          </p>
+          <div class="cta-row">
+            <a href="https://github.com/kirodubes/kiro-discussions/discussions/new?category=ideas" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              Share an idea
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 3a1 1 0 0 1 1 1v8.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-5 5a1 1 0 0 1-1.414 0l-5-5a1 1 0 1 1 1.414-1.414L9 12.586V4a1 1 0 0 1 1-1z" clip-rule="evenodd"/></svg>
+            </a>
+            <a href="https://github.com/kirodubes/kiro-discussions/discussions" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Browse the board</a>
+          </div>
+          <p class="hero-foot">Powered by GitHub Discussions &middot; free &middot; reading needs no account</p>
+        </div>
+      </section>
+
+      <!-- ── How it works ───────────────────────────────────────── -->
+      <section id="how" class="section">
+        <div class="container section-inner">
+          <p class="eyebrow">How it works</p>
+          <h2>From a comment to the roadmap</h2>
+          <p class="lead">
+            Three steps. You post, the community votes, and the most-wanted ideas get built &mdash; into
+            the Arch Linux Tweak Tool, the ISO, the themes, or wherever they fit.
+          </p>
+
+          <div class="pkg-grid">
+            <div class="pkg-card">
+              <span class="count">step 1</span>
+              <h3>Post it</h3>
+              <p>Drop your feature request in <b>Ideas</b>, or answer a question in <b>Polls</b>. A sentence is plenty &mdash; describe what you'd like and why.</p>
+            </div>
+            <div class="pkg-card">
+              <span class="count">step 2</span>
+              <h3>Vote it up</h3>
+              <p>Upvote the ideas you want most. The board sorts by votes, so the top of the list is exactly what the community is asking for.</p>
+            </div>
+            <div class="pkg-card">
+              <span class="count">step 3</span>
+              <h3>We build from the top</h3>
+              <p>The roadmap follows demand. The most-wanted ideas get picked up and shipped &mdash; and you'll see them announced back here.</p>
+            </div>
+          </div>
+
+          <div class="cta-row" style="margin-top:2.5rem; justify-content:flex-start;">
+            <a href="https://github.com/kirodubes/kiro-discussions/discussions" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Open the board &rarr;</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Categories ─────────────────────────────────────────── -->
+      <section id="categories" class="section">
+        <div class="container section-inner">
+          <p class="eyebrow">Categories</p>
+          <h2>Where things go</h2>
+          <p class="lead">A small, focused set &mdash; so it's always obvious where to post.</p>
+
+          <div class="pkg-grid">
+            <div class="pkg-card">
+              <h3>💡 Ideas</h3>
+              <p>Feature requests you can vote on. The heart of the board &mdash; this is what drives the roadmap.</p>
+            </div>
+            <div class="pkg-card">
+              <h3>🗳️ Polls</h3>
+              <p>We put a question to the community and you choose. Quick way to settle "which of these should we build first?"</p>
+            </div>
+            <div class="pkg-card">
+              <h3>🙌 Show &amp; tell</h3>
+              <p>Share your Kiro setup &mdash; your desktop, your tweaks, your rice. Inspiration for everyone else.</p>
+            </div>
+            <div class="pkg-card">
+              <h3>🙏 Q&amp;A</h3>
+              <p>Ask the community for help and mark the answer that worked. Great for "how do I…" questions.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Guidelines ─────────────────────────────────────────── -->
+      <section id="guidelines" class="section">
+        <div class="container section-inner">
+          <p class="eyebrow">Guidelines</p>
+          <h2>A good place to be</h2>
+          <p class="lead">
+            Every Linux distro is a good distro. This space is for making <strong>Kiro</strong> better &mdash;
+            never for putting down what you run. Whatever you're on, you're welcome here.
+          </p>
+
+          <div class="note">
+            <b>A few house rules:</b>
+            <ul style="margin:0.6rem 0 0; padding-left:1.2rem;">
+              <li>Be kind and respectful &mdash; to people and to other distros.</li>
+              <li>Search before you post, then upvote instead of duplicating.</li>
+              <li>This is for ideas &amp; suggestions. Found a bug? Open it on the matching code repo, not here.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Reach us ───────────────────────────────────────────── -->
+      <section id="reach" class="section">
+        <div class="container section-inner">
+          <p class="eyebrow">Reach us</p>
+          <h2>For everything that isn't an idea</h2>
+          <p class="lead">
+            Want to say hello, ask a longer question, or support the work? The best ways to reach us:
+          </p>
+
+          <div class="pkg-grid">
+            <div class="pkg-card">
+              <h3>YouTube</h3>
+              <p>Leave a comment under any video &mdash; it's the most reliable way to get a reply.</p>
+              <div class="cta-row" style="margin-top:1.2rem; justify-content:flex-start;">
+                <a href="https://www.youtube.com/erikdubois" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Visit the channel &rarr;</a>
+              </div>
+            </div>
+            <div class="pkg-card">
+              <h3>Patreon</h3>
+              <p>Follow along, get closer to the work, and help keep Kiro free for everyone.</p>
+              <div class="cta-row" style="margin-top:1.2rem; justify-content:flex-start;">
+                <a href="https://www.patreon.com/c/kiroproject" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Visit Patreon &rarr;</a>
+              </div>
+            </div>
+          </div>
+
+          <p class="hero-foot" style="margin-top:2rem;">More about Kiro &middot; <a href="https://kiroproject.be" target="_blank" rel="noopener noreferrer">kiroproject.be</a></p>
+        </div>
+      </section>
+    </main>
+
+    <!-- ── Footer ───────────────────────────────────────────────── -->
+    <!-- KIRO:FOOTER START — managed by Kiro-HQ/propagate-web-shared.sh; do not edit by hand -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>&copy; 2026 kiro-discussions &middot; Built by Erik Dubois</span>
+        <span class="footer-sep">&middot;</span>
+        <a href="https://kiroproject.be" target="_blank" rel="noopener noreferrer">kiroproject.be</a>
+        <span class="footer-sep">&middot;</span>
+        <a href="https://www.youtube.com/erikdubois" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </div>
+    </footer>
+    <!-- KIRO:FOOTER END -->
+  </body>
+</html>
